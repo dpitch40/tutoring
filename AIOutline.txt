@@ -1,0 +1,25 @@
+People have been trying to teach machine to think like humans for as long as there have been digital computers (or longer)
+    Intelligent AI has been a few decades in the future since the 50s or 60s
+
+AI effect: Once an AI problem is solved, we no longer thing of it as AI
+"AI is whatever hasn't been done yet." - Douglas Hofstadter
+
+Kinds of problems/applications:
+Handwriting/character/speech recognition
+Computer vision
+Advanced image processing (e.g. photoshop)
+Facial recognition/automatic tagging
+Video game AI
+Natural language processing/chatbots
+Virtual assistants
+Data mining
+Spam filtering
+Recommendation systems
+Sentiment analysis
+
+A very common technique: machine learning
+Classification
+Clustering
+    Anomaly detection
+Association detection
+Supervised vs. unsupervised learning
