@@ -8,7 +8,7 @@ from functools import wraps
 from heap_util import left_heap_child, right_heap_child, is_heap, visualize_heap
 
 iterations = 1
-max_int = 20#sys.maxsize
+max_int = sys.maxsize
 max_time = 5
 
 # Utility functions
@@ -199,7 +199,7 @@ def test_algorithms():
     assert _is_sorted(sorted(l))
 
     for algorithm in algorithms:
-        sorted_l = algorithm(l_small)
+        sorted_l = algorithm(l)
         status = 'succeeded' if _is_sorted(sorted_l) else 'FAILED'
         print(f'{algorithm.__name__}: Sorting {status}')
 
