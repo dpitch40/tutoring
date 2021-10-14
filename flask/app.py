@@ -11,7 +11,7 @@ DB_URL = f"sqlite:///test.db"
 engine = create_engine(DB_URL)
 session = sessionmaker(bind=engine)
 @contextmanager
-def session_scope(self, *args, **kwargs):
+def session_scope(*args, **kwargs):
     session = session(*args, **kwargs)
     try:
         yield session
@@ -35,4 +35,5 @@ app = Flask(__name__)
 
 @app.route("/")
 def hello_world():
-    return "<p>Hello, World!</p>"
+    with session_scope() as session:
+        return "<p>Hello, World!</p>"
