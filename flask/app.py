@@ -36,4 +36,8 @@ app = Flask(__name__)
 @app.route("/")
 def hello_world():
     with session_scope() as session:
-        return "<p>Hello, World!</p>"
+         cars = session.query(Car).all()
+         return_val = [f"<p>There are {len(cars)} cars!</p>"]
+         for car in cars:
+             return_val.append(f"<p>A {car.color} one with ID {car.id_} that can go {car.speed}</p>")
+         return '\n'.join(return_val)
