@@ -9,10 +9,10 @@ from sqlalchemy.ext.declarative import declarative_base
 
 DB_URL = f"sqlite:///test.db"
 engine = create_engine(DB_URL)
-session = sessionmaker(bind=engine)
+session_maker = sessionmaker(bind=engine)
 @contextmanager
 def session_scope(*args, **kwargs):
-    session = session(*args, **kwargs)
+    session = session_maker(*args, **kwargs)
     try:
         yield session
         session.commit()
