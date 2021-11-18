@@ -1,14 +1,16 @@
 import os
+import os.path
 import sqlite3
 
-def setup_db():
-    os.remove('example.db')
-    con = sqlite3.connect('example.db')
+def setup_db(fname):
+    if os.path.isfile(fname):
+        os.remove(fname)
+    con = sqlite3.connect(fname)
     cursor = con.cursor()
     return con, cursor
 
 def simple_example():
-    con, cursor = setup_db()
+    con, cursor = setup_db("simple.db")
     cursor.execute('CREATE TABLE books (title text, author text, price real, quantity integer);')
     for book_info in [('Great Expectations', 'Charles Dickens', 10.99, 2),
                       ('Crime and Punishment', 'Fyodor Dostoevsky', 27.95, 4),
@@ -23,7 +25,7 @@ def simple_example():
     con.close()
 
 def relational_example():
-    con, cursor = setup_db()
+    con, cursor = setup_db("relational.db")
     cursor.execute('''CREATE TABLE authors (id integer PRIMARY KEY,
                                             name text,
                                             born integer NOT NULL,
@@ -58,4 +60,5 @@ WHERE authors.died IS NOT NULL;'''):
     con.close()
 
 if __name__ == '__main__':
+    simple_example()
     relational_example()
