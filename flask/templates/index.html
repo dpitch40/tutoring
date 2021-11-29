@@ -1,0 +1,30 @@
+{%- extends "base.html" -%}
+{% block title %}Bike List{% endblock %}
+
+{% block content %}
+  <a href="{{ url_for('add_bike') }}" class="btn btn-secondary">Add Bike</a>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Color</th>
+        <th>Weight</th>
+        <th>Type</th>
+        <th>Gearing</th>
+        <th>Price</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for bike in bikes -%}
+      <tr>
+        <td>{{ bike.name }}</td>
+        <td>{{ bike.color }}</td>
+        <td>{{ bike.weight }}</td>
+        <td>{{ bike.type_ }}</td>
+        <td>{{ bike.gearing }}</td>
+        <td>{{ bike.price }}</td>
+      </tr>
+      {%- endfor %}
+    </tbody>
+  </table>
+{% endblock %}
