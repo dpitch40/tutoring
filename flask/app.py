@@ -1,13 +1,14 @@
+import enum
 from contextlib import contextmanager
 
-from flask import Flask
+from flask import Flask, render_template, request
 
-from sqlalchemy import Column, Integer, String, Boolean, DateTime
+from sqlalchemy import Column, Integer, String, Boolean, DateTime, Numeric, Enum
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
-DB_URL = f"sqlite:///test.db"
+DB_URL = f'sqlite:///test.db'
 engine = create_engine(DB_URL)
 session_maker = sessionmaker(bind=engine)
 @contextmanager
@@ -24,20 +25,49 @@ def session_scope(*args, **kwargs):
 
 Base = declarative_base()
 
-class Car(Base):
-    __tablename__ = 'cars'
+class BikeType(enum.Enum):
+    road = 'Road'
+    mountain = 'Mountain'
+    electric = 'Electric'
+    snow = 'Snow'
+    tandem = 'Tandem'
 
-    id_ = Column("id", Integer, primary_key=True)
-    speed = Column(Integer)
+class GearingType(enum.Enum):
+    multi_speed = 'Multi-Speed'
+    single_speed = 'Single Speed'
+    fixed_gear = 'Fixed Gear'
+    igh = 'Internal Geared Hub'
+
+class Bike(Base):
+    __tablename__ = 'bikes'
+
+    id_ = Column('id', Integer, primary_key=True)
+    name = Column(String)
     color = Column(String)
+    weight = Column(Numeric)
+    type_ = Column('type', Enum(BikeType))
+    gearing = Column(Enum(GearingType))
+    price = Column(Integer)
 
 app = Flask(__name__)
 
-@app.route("/")
-def hello_world():
+@app.route('/')
+def index():
     with session_scope() as session:
-         cars = session.query(Car).all()
-         return_val = [f"<p>There are {len(cars)} cars!</p>"]
-         for car in cars:
-             return_val.append(f"<p>A {car.color} one with ID {car.id_} that can go {car.speed}</p>")
-         return '\n'.join(return_val)
+        bikes = session.query(Bike).all()
+
+    return render_template('index.html', bikes=bikes)
+
+@app.route('/add', methods=['GET', 'POST'])
+def add_bike():
+    if request.method == 'GET':
+        return render_template('add_bike.html')
+    else:
+        print(request.form)
+        return render_template('index.html')
+
+
+@app.context_processor
+def inject_enums():
+    return {'bike_type': BikeType,
+            'gearing_type': GearingType}
