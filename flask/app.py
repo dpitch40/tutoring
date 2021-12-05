@@ -56,15 +56,36 @@ def index():
     with session_scope() as session:
         bikes = session.query(Bike).all()
 
-    return render_template('index.html', bikes=bikes)
+        return render_template('index.html', bikes=bikes)
 
 @app.route('/add', methods=['GET', 'POST'])
 def add_bike():
     if request.method == 'GET':
         return render_template('add_bike.html')
     else:
-        print(request.form)
-        return render_template('index.html')
+        form_data = request.form
+        print(form_data)
+        new_bike = Bike(name=form_data['name'],
+                        color=form_data['color'],
+                        weight=float(form_data['weight']),
+                        type_=getattr(BikeType, form_data['type']),
+                        gearing=getattr(GearingType, form_data['gearing']),
+                        price=int(float(form_data['price']) * 100))
+
+        with session_scope() as session:
+            session.add(new_bike)
+            session.commit()
+
+        return index()
+
+@app.route('/delete/<int:id_>', methods=['GET'])
+def delete_bike(id_):
+    with session_scope() as session:
+        bike = session.query(Bike).get(id_)
+        if bike is not None:
+            session.delete(bike)
+            session.commit()
+    return index()
 
 
 @app.context_processor

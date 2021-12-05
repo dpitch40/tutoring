@@ -8,10 +8,11 @@
       <tr>
         <th>Name</th>
         <th>Color</th>
-        <th>Weight</th>
+        <th>Weight (lbs)</th>
         <th>Type</th>
         <th>Gearing</th>
         <th>Price</th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
@@ -19,10 +20,11 @@
       <tr>
         <td>{{ bike.name }}</td>
         <td>{{ bike.color }}</td>
-        <td>{{ bike.weight }}</td>
-        <td>{{ bike.type_ }}</td>
-        <td>{{ bike.gearing }}</td>
-        <td>{{ bike.price }}</td>
+        <td>{{ bike.weight | round(4) }}</td>
+        <td>{{ bike.type_.value }}</td>
+        <td>{{ bike.gearing.value }}</td>
+        <td>${{ bike.price / 100 | round(2) }}</td>
+        <td><a href="{{ url_for('delete_bike', id_=bike.id_) }}" class="btn btn-danger">Delete</a></td>
       </tr>
       {%- endfor %}
     </tbody>
