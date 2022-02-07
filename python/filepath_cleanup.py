@@ -1,5 +1,6 @@
 import pytest
 import random
+import string
 
 class YouMessedUpError(NotImplementedError):
     pass
@@ -10,6 +11,15 @@ def filter_filename(fname):
     ilegal_chars = ['<', '>', '"', ";", ';', ':', ',', '|', '\\', '?', '!', '*']
     for char in ilegal_chars:
         fname = fname.replace(char, '_')
+
+    char_chars = []
+    for char in fname:
+        if char in string.printable:
+            char_chars.append(char)
+        else:
+            char_chars.append('_')
+    fname = "".join(char_chars)
+            
 
     return fname
 
