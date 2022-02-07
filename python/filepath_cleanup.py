@@ -30,19 +30,19 @@ def test_filter_out_illegal_characters():
 def test_filter_out_non_ascii_characters():
     for i in range(10):
         fname_template = '/home/tuser/%snon_ascii.txt'
-        assert filter_filename(fname_template % chr(random.randint(256, 0x1000)),
-                               fname_template % '_')
+        assert filter_filename(fname_template % chr(random.randint(256, 0x1000))) == \
+                               fname_template % '_'
 
 def test_filter_initial_period():
-    assert filter_filename('/home/tuser/Music/...OK Go/01 Song.ogg',
-        '/home/tuser/Music/_..OK Go/01 Song.ogg')
+    assert filter_filename('/home/tuser/Music/...OK Go/01 Song.ogg') == \
+        '/home/tuser/Music/_..OK Go/01 Song.ogg'
 
 def test_filter_end_period():
-    assert filter_filename('/home/tuser/Music/OK Go/01 No_ext.',
-        '/home/tuser/Music/OK Go/01 No_ext_')
+    assert filter_filename('/home/tuser/Music/OK Go/01 No_ext.') == \
+        '/home/tuser/Music/OK Go/01 No_ext_'
 
 def test_filter_end_space():
-    assert filter_filename('/home/tuser/Documents/ stuff/doc.txt',
-        '/home/tuser/Documents/ stuff/doc.txt')
-    assert filter_filename('/home/tuser/Documents/stuff /doc.txt',
-        '/home/tuser/Documents/stuff_/doc.txt')
+    assert filter_filename('/home/tuser/Documents/ stuff/doc.txt') == \
+        '/home/tuser/Documents/ stuff/doc.txt'
+    assert filter_filename('/home/tuser/Documents/stuff /doc.txt') == \
+        '/home/tuser/Documents/stuff_/doc.txt'
