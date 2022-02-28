@@ -1,8 +1,27 @@
 import pytest
 import random
+import string
+
+class YouMessedUpError(NotImplementedError):
+    pass
+
 
 def filter_filename(fname):
-    raise NotImplementedError
+
+    ilegal_chars = ['<', '>', '"', ";", ';', ':', ',', '|', '\\', '?', '!', '*']
+    for char in ilegal_chars:
+        fname = fname.replace(char, '_')
+
+    char_chars = []
+    for char in fname:
+        if char in string.printable:
+            char_chars.append(char)
+        else:
+            char_chars.append('_')
+    fname = "".join(char_chars)
+            
+
+    return fname
 
 
 def test_filter_out_illegal_characters():
@@ -17,7 +36,6 @@ def test_filter_out_illegal_characters():
     assert filter_filename('/home/tuser/<lt.txt') == '/home/tuser/_lt.txt'
     assert filter_filename('/home/tuser/>gt.txt') == '/home/tuser/_gt.txt'
     assert filter_filename('/home/tuser/|vbar.txt') == '/home/tuser/_vbar.txt'
-    assert filter_filename('/home/tuser/.txt') == '/home/tuser/_vbar.txt'
 
 def test_filter_out_non_ascii_characters():
     for i in range(10):
