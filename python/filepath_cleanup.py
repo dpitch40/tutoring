@@ -8,7 +8,7 @@ class YouMessedUpError(NotImplementedError):
 
 def filter_filename(fname):
 
-    ilegal_chars = ['<', '>', '"', ";", ';', ':', ',', '|', '\\', '?', '!', '*']
+    ilegal_chars = ['<', '>', '"', ';', ';', ':', ',', '|', '\\', '?', '!', '*']
     for char in ilegal_chars:
         fname = fname.replace(char, '_')
 
@@ -19,6 +19,17 @@ def filter_filename(fname):
         else:
             char_chars.append('_')
     fname = "".join(char_chars)
+
+    split_fname = fname.split('/')
+    split_fname.pop(0)
+    fname = ''
+    for split in split_fname:
+        to_add = split
+        if split[0] == '.': to_add = '_' + split[1:]
+        if split[-1] == ' ': to_add = split[:-1] + '_'
+        if split[-1] == '.': to_add = split[:-1] + '_'
+        fname += '/' + to_add
+        
             
 
     return fname
