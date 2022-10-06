@@ -1,6 +1,6 @@
 import random
 import time
-import argparse
+from concurrent.futures import *
 
 def is_even(n):
     # Simulate network call
@@ -9,14 +9,10 @@ def is_even(n):
     return n % 2 == 0
 
 def check_is_even(integers):
-    print(integers) # TODO
+    with ThreadPoolExecutor(max_workers=100) as executor:
+        future = executor.map(is_even, integers)
+        print(list(future))
 
-def main():
-    parser = argparse.ArgumentParser(description='')
-    parser.add_argument('integers', type=int, nargs='+', help='')
-    args = parser.parse_args()
+def main(stuff):
+    check_is_even(stuff)
 
-    check_is_even(args.integers)
-
-if __name__ == '__main__':
-    main()

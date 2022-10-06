@@ -80,8 +80,30 @@ def verify_path(path):
         2. Visits every city exactly once (aside from the starting point)
     And whose second element is the total length of the path in km.
     """
-    raise NotImplementedError
+    YikesMoment = False
+    LastCity = path[0]
+    Distance = 0
 
+    for Num in path[:-1]:
+        if path[:-1].count(Num) > 1: YikesMoment = True
+    if len(path) != len(CITIES) + 1: YikesMoment = True
+    if path[0] != path[-1]: YikesMoment  = True
+
+    if YikesMoment:
+        return (False, 0)
+
+    for City in path[1:]:
+        Distance += spherical_distance(CITIES[LastCity][2], CITIES[LastCity][3], CITIES[City][2], CITIES[City][3])
+        LastCity = City
+
+    return (True, Distance)
+
+    
+
+
+
+    
+    
 def test_verify_path():
     path1 = list(range(50)) + [0]
     assert verify_path(path1)[0] is True
@@ -92,3 +114,6 @@ def test_verify_path():
     path3 = list(range(50)) + [0]
     path3[1] = 25
     assert verify_path(path3)[0] is False
+
+class CowError(NotImplementedError):
+    pass
